@@ -103,8 +103,10 @@ path = KeyOf(lambda u: u.address.city)
 str(path)          # → "address.city"
 path.to_jsonpath() # → "$.address.city"
 path.to_bracket()  # → "['address']['city']"
-path.to_posix()    # → "address/city"
-path.to_xpath()    # → "/address/city"
+path.to_posix()                 # → "address/city"
+path.to_posix(from_root=True)   # → "/address/city"
+path.to_xpath()                 # → "address/city"
+path.to_xpath(from_root=True)   # → "/address/city"
 ```
 
 ## Equality and hashing

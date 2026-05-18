@@ -291,6 +291,22 @@ def test_to_posix(complex_dict):
     assert path.to_posix() == "users/0/name"
 
 
+def test_to_posix_relative_explicit(complex_dict):
+    path: KeyOf[dict, Any] = KeyOf(lambda d: d["users"][0]["name"])
+    assert path.to_posix(from_root=False) == "users/0/name"
+
+
+def test_to_posix_from_root(complex_dict):
+    path: KeyOf[dict, Any] = KeyOf(lambda d: d["users"][0]["name"])
+    assert path.to_posix(from_root=True) == "/users/0/name"
+
+
+def test_to_posix_from_root_single_segment():
+    path: KeyOf[User, str] = KeyOf(lambda u: u.name)
+    assert path.to_posix(from_root=True) == "/name"
+    assert path.to_posix() == "name"
+
+
 def test_to_python(complex_dict):
     path: KeyOf[dict, Any] = KeyOf(lambda d: d["users"][0]["name"])
     assert path.to_python() == "users.0.name"
@@ -313,7 +329,23 @@ def test_to_jsonpath(complex_dict):
 
 def test_to_xpath(complex_dict):
     path: KeyOf[dict, Any] = KeyOf(lambda d: d["users"][0]["name"])
-    assert path.to_xpath() == "/users/0/name"
+    assert path.to_xpath() == "users/0/name"
+
+
+def test_to_xpath_relative_explicit(complex_dict):
+    path: KeyOf[dict, Any] = KeyOf(lambda d: d["users"][0]["name"])
+    assert path.to_xpath(from_root=False) == "users/0/name"
+
+
+def test_to_xpath_from_root(complex_dict):
+    path: KeyOf[dict, Any] = KeyOf(lambda d: d["users"][0]["name"])
+    assert path.to_xpath(from_root=True) == "/users/0/name"
+
+
+def test_to_xpath_from_root_single_segment():
+    path: KeyOf[User, str] = KeyOf(lambda u: u.name)
+    assert path.to_xpath(from_root=True) == "/name"
+    assert path.to_xpath() == "name"
 
 
 def test_serialization_spaced_key_bracket():

@@ -42,7 +42,7 @@ Basic usage::
 from __future__ import annotations
 
 __all__ = ["KeyOf", "nn"]
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 
 from typing import TYPE_CHECKING, Any, Generic, cast, final, overload
 
@@ -268,9 +268,19 @@ class KeyOf(Generic[T, R]):
         """``address.city``  - dot-separated (default)."""
         return ".".join(self._parts)
 
-    def to_posix(self) -> str:
-        """``address/city``  - POSIX-style slash-separated."""
-        return "/".join(self._parts)
+    def to_posix(self, from_root: bool = False) -> str:
+        """
+        POSIX-style slash-separated path.
+
+        Parameters
+        ----------
+        from_root:
+            If ``True``, prefix the result with ``/`` to denote an absolute
+            path (``/address/city``).  Defaults to ``False`` for a relative
+            path (``address/city``).
+        """
+        joined = "/".join(self._parts)
+        return "/" + joined if from_root else joined
 
     def to_python(self) -> str:
         """
@@ -291,9 +301,19 @@ class KeyOf(Generic[T, R]):
         """``$.address.city``  - JSONPath notation."""
         return "$." + ".".join(self._parts)
 
-    def to_xpath(self) -> str:
-        """``/address/city``  - XPath-style slash-separated with leading slash."""
-        return "/" + "/".join(self._parts)
+    def to_xpath(self, from_root: bool = False) -> str:
+        """
+        XPath-style slash-separated path.
+
+        Parameters
+        ----------
+        from_root:
+            If ``True``, prefix the result with ``/`` to denote an absolute
+            XPath (``/address/city``).  Defaults to ``False`` for a relative
+            XPath (``address/city``).
+        """
+        joined = "/".join(self._parts)
+        return "/" + joined if from_root else joined
 
     def format(self, template: str) -> str:
         """
